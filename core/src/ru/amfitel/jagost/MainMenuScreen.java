@@ -3,25 +3,37 @@ package ru.amfitel.jagost;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 /**
  * Created by st_ni on 11.12.2016.
  */
 public class MainMenuScreen implements Screen {
 
-    OrthographicCamera camera;
-    SpriteBatch batch;
-    BitmapFont font;
+    Skin skin;
+    Stage stage;
+    TextButton newGameButton;
+    TextButton exitGameButton;
 
     public MainMenuScreen(final Game gam) {
-        batch = new SpriteBatch();
-        font = new BitmapFont();
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        Gdx.graphics.setContinuousRendering(false);
+//        Gdx.graphics.requestRendering();
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);// Make the stage consume events
+        createBasicSkin();
+
+         newGameButton = new TextButton("New game", skin); // Use the initialized skin
+        newGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
+        stage.addActor(newGameButton);
+
+         exitGameButton = new TextButton("Exit", skin); // Use the initialized skin
+        exitGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - 80);
+        stage.addActor(exitGameButton);
     }
 
 
@@ -32,26 +44,25 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        camera.update();
-        batch.setProjectionMatrix(camera.combined);
+        stage.act();
+        stage.draw();
 
-        batch.begin();
-        font.draw(batch, "Welcome to Drop!!! ", 100, 150);
-        font.draw(batch, "Tap anywhere to begin!", 100, 100);
-        batch.end();
-
-        if (Gdx.input.isTouched()) {
-//            game.setScreen(new GameScreen(game));
-            dispose();
+        if(Gdx.input.isTouched()) {
+            if(exitGameButton.isPressed()){
+                Gdx.app.exit();
+            }
+            if(newGameButton.isPressed()){
+                //todo
+            }
         }
     }
 
     @Override
     public void resize(int width, int height) {
-
+        System.out.println(width + " " + height);
     }
 
     @Override
@@ -71,7 +82,29 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
-        font.dispose();
+        skin.dispose();
+        stage.dispose();
+    }
+
+    private void createBasicSkin() {
+        //Create a font
+        BitmapFont font = new BitmapFont();
+        skin = new Skin();
+        skin.add("default", font);
+
+        //Create a texture
+        Pixmap pixmap = new Pixmap((int) Gdx.graphics.getWidth() / 4, (int) Gdx.graphics.getHeight() / 10, Pixmap.Format.RGB888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.fill();
+        skin.add("background", new Texture(pixmap));
+
+        //Create a button style
+        TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+        textButtonStyle.up = skin.newDrawable("background", Color.GRAY);
+        textButtonStyle.down = skin.newDrawable("background", Color.DARK_GRAY);
+        textButtonStyle.checked = skin.newDrawable("background", Color.DARK_GRAY);
+        textButtonStyle.over = skin.newDrawable("background", Color.LIGHT_GRAY);
+        textButtonStyle.font = skin.getFont("default");
+        skin.add("default", textButtonStyle);
     }
 }
