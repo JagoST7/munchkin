@@ -18,8 +18,10 @@ public class MainMenuScreen implements Screen {
     Stage stage;
     TextButton newGameButton;
     TextButton exitGameButton;
+    final Game game;
 
     public MainMenuScreen(final Game gam) {
+        game = gam;
         Gdx.graphics.setContinuousRendering(false);
 //        Gdx.graphics.requestRendering();
 
