@@ -1,4 +1,4 @@
-package ru.amfitel.jagost;
+package ru.amfitel.jagost.menu;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import ru.amfitel.jagost.menu.BasicSkin;
 
 /**
  * Created by st_ni on 11.12.2016.
@@ -16,12 +15,13 @@ public class MainMenuScreen implements Screen {
 
     Skin skin;
     Stage stage;
-    TextButton newGameButton;
+    TextButton startNewServerButton;
+    TextButton joinGameButton;
     TextButton exitGameButton;
     final Game game;
 
-    public MainMenuScreen(final Game gam) {
-        game = gam;
+    public MainMenuScreen(final Game game) {
+        this.game = game;
         Gdx.graphics.setContinuousRendering(false);
 //        Gdx.graphics.requestRendering();
 
@@ -29,12 +29,16 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);// Make the stage consume events
         skin = BasicSkin.getSkin();
 
-         newGameButton = new TextButton("New game", skin); // Use the initialized skin
-        newGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
-        stage.addActor(newGameButton);
+        startNewServerButton = new TextButton("Start new server", skin); // Use the initialized skin
+        startNewServerButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2);
+        stage.addActor(startNewServerButton);
 
-         exitGameButton = new TextButton("Exit", skin); // Use the initialized skin
-        exitGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - 80);
+        joinGameButton = new TextButton("Join game", skin); // Use the initialized skin
+        joinGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - 80);
+        stage.addActor(joinGameButton);
+
+        exitGameButton = new TextButton("Exit", skin); // Use the initialized skin
+        exitGameButton.setPosition(Gdx.graphics.getWidth() / 2 - Gdx.graphics.getWidth() / 8, Gdx.graphics.getHeight() / 2 - 160);
         stage.addActor(exitGameButton);
     }
 
@@ -52,11 +56,15 @@ public class MainMenuScreen implements Screen {
         stage.act();
         stage.draw();
 
-        if(Gdx.input.isTouched()) {
-            if(exitGameButton.isPressed()){
+        if (Gdx.input.isTouched()) {
+            if (exitGameButton.isPressed()) {
                 Gdx.app.exit();
             }
-            if(newGameButton.isPressed()){
+            if (startNewServerButton.isPressed()) {
+                game.setScreen(new StartNewServer(game));
+                this.dispose();
+            }
+            if (joinGameButton.isPressed()) {
                 //todo
             }
         }
