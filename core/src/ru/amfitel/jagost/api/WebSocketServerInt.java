@@ -5,4 +5,5 @@ package ru.amfitel.jagost.api;
  */
 public interface WebSocketServerInt {
 
+    boolean isStarted();
 }

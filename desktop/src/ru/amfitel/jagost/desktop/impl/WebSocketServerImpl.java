@@ -24,6 +24,10 @@ public class WebSocketServerImpl implements WebSocketServerInt {
 
 	}
 
+	public boolean isStarted(){
+		return wss != null;
+	}
+
 	public void startServer(int port) {
 		if(wss!= null) {
 			try {

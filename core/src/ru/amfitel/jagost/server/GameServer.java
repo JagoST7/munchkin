@@ -23,7 +23,7 @@ public class GameServer {
 	}
 
 	public boolean isStarted() {
-		return false; //TODO
+		return webSocketImpl != null && webSocketImpl.isStarted();
 	}
 
 	public void dispose() {
