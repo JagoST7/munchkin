@@ -19,9 +19,7 @@ public class EntryPoint extends Game {
 	
 	@Override
 	public void dispose () {
-		if(GameServer.getInstance().isStarted()){
-			GameServer.getInstance().dispose();
-		}
+		GameServer.getInstance().dispose();
 	}
 
 	public void setWebSocketImpl(WebSocketServerInt webSocketServerInt){

@@ -1,6 +1,5 @@
 package ru.amfitel.jagost.server;
 
-import com.badlogic.gdx.net.ServerSocket;
 import ru.amfitel.jagost.api.WebSocketServerInt;
 
 /**
@@ -8,7 +7,6 @@ import ru.amfitel.jagost.api.WebSocketServerInt;
  */
 public class GameServer {
 	private static GameServer instance;
-	private ServerSocket serverSocket;
 	private WebSocketServerInt webSocketImpl;
 
 	private GameServer() {
@@ -22,13 +20,8 @@ public class GameServer {
 		return instance;
 	}
 
-	public boolean isStarted() {
-		return webSocketImpl != null && webSocketImpl.isStarted();
-	}
-
 	public void dispose() {
-		serverSocket.dispose();
-		//TODO
+		webSocketImpl.stop();
 	}
 
 	public void setWebSocketImpl(WebSocketServerInt webSocketImpl) {

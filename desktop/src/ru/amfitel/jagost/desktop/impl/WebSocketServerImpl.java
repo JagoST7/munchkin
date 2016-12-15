@@ -24,25 +24,12 @@ public class WebSocketServerImpl implements WebSocketServerInt {
 
 	}
 
-	public boolean isStarted(){
-		return wss != null;
-	}
-
 	public void startServer(int port) {
-		if(wss!= null) {
-			try {
-				wss.stop();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
+		stop();
         wss = new WebSocketServer(new InetSocketAddress(port)) {
 			@Override
 			public void onOpen(WebSocket conn, ClientHandshake handshake) {
-				System.out.println("open :"+conn.getRemoteSocketAddress().getHostString());
-
+				System.out.println("open :"+conn.getLocalSocketAddress().getHostName());
 			}
 
 			@Override
@@ -60,6 +47,19 @@ public class WebSocketServerImpl implements WebSocketServerInt {
 
 			}
 		};
+	}
+
+	@Override
+	public void stop() {
+		if(wss!= null) {
+			try {
+				wss.stop();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
 
