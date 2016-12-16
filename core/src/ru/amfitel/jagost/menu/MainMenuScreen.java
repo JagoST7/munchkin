@@ -4,8 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -31,13 +30,18 @@ public class MainMenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);// Make the stage consume events
         skin = BasicSkin.getSkin(TextButton.class);
 
-        startNewServerButton = new TextButton("Start new server", skin); // Use the initialized skin
+        EventListener listener = getTouchListener();
+
+        startNewServerButton = new TextButton("Start new server", skin);
+        startNewServerButton.addListener(listener);
         stage.addActor(startNewServerButton);
 
-        joinGameButton = new TextButton("Join game", skin); // Use the initialized skin
+        joinGameButton = new TextButton("Join game", skin);
+        joinGameButton.addListener(listener);
         stage.addActor(joinGameButton);
 
-        exitGameButton = new TextButton("Exit", skin); // Use the initialized skin
+        exitGameButton = new TextButton("Exit", skin);
+        exitGameButton.addListener(listener);
         stage.addActor(exitGameButton);
 
         Gdx.graphics.setContinuousRendering(false);
@@ -55,24 +59,11 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        startNewServerButton.setDisabled(!GameServer.getInstance().isCanStart());
-        joinGameButton.setDisabled(false);
+        startNewServerButton.setDisabled(!GameServer.getInstance().isHasServerImpl());
+        joinGameButton.setDisabled(!GameServer.getInstance().isHasClientImpl());
 
         stage.act();
         stage.draw();
-
-        if (Gdx.input.isTouched()) {
-            if (exitGameButton.isPressed()) {
-                Gdx.app.exit();
-            }
-            if (!startNewServerButton.isDisabled() && startNewServerButton.isPressed()) {
-                game.setScreen(new StartNewServer(game));
-                this.dispose();
-            }
-            if (!joinGameButton.isDisabled() && joinGameButton.isPressed()) {
-                //todo
-            }
-        }
     }
 
     @Override
@@ -106,5 +97,28 @@ public class MainMenuScreen implements Screen {
         startNewServerButton.setPosition(width / 2 - width / 8, height / 2);
         joinGameButton.setPosition(width / 2 - width / 8, height / 2 - 80);
         exitGameButton.setPosition(width / 2 - width / 8, height / 2 - 160);
+    }
+
+    private EventListener getTouchListener() {
+        return new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (event.getListenerActor() == exitGameButton) {
+                    Gdx.app.exit();
+                } else if (event.getListenerActor() == startNewServerButton) {
+//                    game.setScreen(new StartNewServer(game));
+//                    MainMenuScreen.this.dispose();
+                    GameServer.getInstance().startServer();
+                } else if (event.getListenerActor() == joinGameButton) {
+                    GameServer.getInstance().joinToServer();
+                    //todo
+                }
+            }
+        };
     }
 }

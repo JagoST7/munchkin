@@ -2,8 +2,9 @@ package ru.amfitel.jagost.desktop.impl;
 
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
-import ru.amfitel.jagost.api.WebSocketServerInt;
+import ru.amfitel.jagost.api.ServerWebSocketInt;
 import org.java_websocket.server.WebSocketServer;
+import ru.amfitel.jagost.server.ServerEventsHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -14,39 +15,36 @@ import java.net.InetSocketAddress;
  * https://github.com/pepedeab/libGDX-Net
  * https://github.com/TooTallNate/Java-WebSocket
  */
-public class WebSocketServerImpl implements WebSocketServerInt {
+public class ServerWebSocketImpl implements ServerWebSocketInt {
 
 	private WebSocketServer wss;
 
-//	private static Set<Session> peers = Collections.synchronizedSet(new HashSet<Session>());
-
-	public WebSocketServerImpl(){
-
-	}
-
-	public void startServer(int port) {
-		stop();
-        wss = new WebSocketServer(new InetSocketAddress(port)) {
+	public void startServer(final ServerEventsHandler handler) {
+		if(wss != null) {
+			return;
+		}
+        wss = new WebSocketServer(new InetSocketAddress(PORT)) {
 			@Override
 			public void onOpen(WebSocket conn, ClientHandshake handshake) {
-				System.out.println("open :"+conn.getLocalSocketAddress().getHostName());
+				handler.onOpen(conn.hashCode());
 			}
 
 			@Override
 			public void onClose(WebSocket conn, int code, String reason, boolean remote) {
-
+				handler.onClose(conn.hashCode());
 			}
 
 			@Override
 			public void onMessage(WebSocket conn, String message) {
-
+				handler.onMessage(conn.hashCode(), message);
 			}
 
 			@Override
 			public void onError(WebSocket conn, Exception ex) {
-
+				handler.onError(conn.hashCode(), ex);
 			}
 		};
+		wss.start();
 	}
 
 	@Override
@@ -61,6 +59,24 @@ public class WebSocketServerImpl implements WebSocketServerInt {
 			}
 		}
 	}
+
+	@Override
+	public void sendMessage(String msg, int... hashes) {
+		if (wss != null) {
+			for (WebSocket conn : wss.connections()) {
+				if (hashes != null && hashes.length>0) {
+					for (int hash : hashes) {
+						if (hash == conn.hashCode()) {
+							conn.send(msg);
+						}
+					}
+				} else {
+					conn.send(msg);
+				}
+			}
+		}
+	}
+
 }
 
 

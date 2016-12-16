@@ -36,7 +36,8 @@ public class BasicSkin {
 				style.checked = skin.newDrawable("background", Color.DARK_GRAY);
 				style.over = skin.newDrawable("background", Color.SKY);
 				style.font = skin.getFont("default");
-				style.disabled = skin.newDrawable("background", Color.LIGHT_GRAY);
+				style.disabled = skin.newDrawable("background", Color.GRAY);
+				style.disabledFontColor = Color.LIGHT_GRAY;
 				skin.add("default", style);
 			} else if (one == TextField.class) {
 				TextField.TextFieldStyle style = new TextField.TextFieldStyle();

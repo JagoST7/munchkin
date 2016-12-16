@@ -6,9 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import ru.amfitel.jagost.server.GameServer;
 
 
 /**
@@ -20,27 +19,18 @@ public class StartNewServer implements Screen {
 	Stage stage;
 	Skin skin;
 
-	TextField portInput;
 
 	public StartNewServer(final Game game) {
 		this.game = game;
 
 		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(stage);// Make the stage consume events
-		skin = BasicSkin.getSkin(TextField.class, TextButton.class);
-
-		portInput = new TextField("8989",skin);
-		portInput.setDisabled(false);
-		stage.addActor(portInput);
-		portInput.setTextFieldListener(new TextField.TextFieldListener() {
-			@Override
-			public void keyTyped(TextField textField, char c) {
-				System.out.println("char: "+(int)c);
-			}
-		});
+		skin = BasicSkin.getSkin();
 
 		Gdx.graphics.setContinuousRendering(false);
 		Gdx.graphics.requestRendering();
+
+		GameServer.getInstance().startServer();
 	}
 
 	@Override
@@ -89,7 +79,7 @@ public class StartNewServer implements Screen {
 	}
 
 	private void setActorsPositions(int width, int height) {
-		portInput.setPosition(width / 2 - width / 8, height / 2);
+
 	}
 
 }
