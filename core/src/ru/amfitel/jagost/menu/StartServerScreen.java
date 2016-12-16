@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import ru.amfitel.jagost.server.GameServer;
 
@@ -13,24 +15,29 @@ import ru.amfitel.jagost.server.GameServer;
 /**
  * Created by estarcev on 14.12.2016.
  */
-public class StartNewServer implements Screen {
+public class StartServerScreen implements Screen {
 
 	private final Game game;
 	Stage stage;
 	Skin skin;
+	TextArea log;
 
-
-	public StartNewServer(final Game game) {
+	public StartServerScreen(final Game game) {
 		this.game = game;
 
 		stage = new Stage(new ScreenViewport());
-		Gdx.input.setInputProcessor(stage);// Make the stage consume events
-		skin = BasicSkin.getSkin();
+		Gdx.input.setInputProcessor(stage);
+		skin = BasicSkin.getSkin(TextField.class);
 
 		Gdx.graphics.setContinuousRendering(false);
 		Gdx.graphics.requestRendering();
 
+		log = new TextArea("",skin);
+		stage.addActor(log);
+
 		GameServer.getInstance().startServer();
+
+		log.setText("Start server on : " + GameServer.getOwnIpAddress());
 	}
 
 	@Override
@@ -45,10 +52,6 @@ public class StartNewServer implements Screen {
 
 		stage.act();
 		stage.draw();
-
-		if(Gdx.input.isTouched()) {
-			//TODO
-		}
 	}
 
 	@Override
@@ -79,7 +82,12 @@ public class StartNewServer implements Screen {
 	}
 
 	private void setActorsPositions(int width, int height) {
-
+		log.setPosition(10,40);
+		log.setWidth(width-20);
+		log.setHeight(height-50);
 	}
 
+	private void addLineToLog(String line) {
+		log.setText(log.getText()+"/n"+line);
+	}
 }

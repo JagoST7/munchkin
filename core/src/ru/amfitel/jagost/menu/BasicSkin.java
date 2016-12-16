@@ -5,9 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 
 /**
  * Created by estarcev on 14.12.2016.
@@ -46,6 +44,18 @@ public class BasicSkin {
 				style.background = skin.newDrawable("background", Color.GRAY);
 				style.cursor = skin.newDrawable("background", Color.LIGHT_GRAY);
 				style.cursor.setMinWidth(2f);
+				skin.add("default", style);
+			} else if (one == Window.class) {
+				Window.WindowStyle style = new Window.WindowStyle();
+				style.titleFont = skin.getFont("default");
+				style.titleFontColor = Color.BLUE;
+				style.background = skin.newDrawable("background", Color.DARK_GRAY);
+				skin.add("default", style);
+			} else if(one == Label.class) {
+				Label.LabelStyle style = new Label.LabelStyle();
+				style.font = skin.getFont("default");
+				style.fontColor = Color.BLUE;
+				style.background = skin.newDrawable("background", Color.DARK_GRAY);
 				skin.add("default", style);
 			}
 

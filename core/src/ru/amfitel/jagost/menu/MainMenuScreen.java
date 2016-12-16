@@ -111,12 +111,11 @@ public class MainMenuScreen implements Screen {
                 if (event.getListenerActor() == exitGameButton) {
                     Gdx.app.exit();
                 } else if (event.getListenerActor() == startNewServerButton) {
-//                    game.setScreen(new StartNewServer(game));
-//                    MainMenuScreen.this.dispose();
-                    GameServer.getInstance().startServer();
+                    game.setScreen(new StartServerScreen(game));
+                    MainMenuScreen.this.dispose();
                 } else if (event.getListenerActor() == joinGameButton) {
-                    GameServer.getInstance().joinToServer();
-                    //todo
+                    game.setScreen(new JoinToServerScreen(game));
+                    MainMenuScreen.this.dispose();
                 }
             }
         };
