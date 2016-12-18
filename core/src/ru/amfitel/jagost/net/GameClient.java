@@ -2,11 +2,10 @@ package ru.amfitel.jagost.net;
 
 import ru.amfitel.jagost.api.ClientWebSocketInt;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.util.Collections;
-import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
+
 
 /**
  * Created by st_ni on 18.12.2016.
@@ -14,6 +13,8 @@ import java.util.Enumeration;
 public class GameClient {
     private static GameClient instance;
     private ClientWebSocketInt clientWebSocketImpl;
+
+    private Set<ClientEventHandler> eventHandlers = Collections.synchronizedSet(new HashSet<ClientEventHandler>());
 
     private GameClient(){}
 
@@ -38,29 +39,43 @@ public class GameClient {
         return clientWebSocketImpl != null;
     }
 
-    public void joinToServer(String ipAddress, final ClientEventHandler connectHandler) {
+    public void addEventHandler(ClientEventHandler eventHandler){
+        eventHandlers.add(eventHandler);
+    }
+
+    public void removeEventHandler(ClientEventHandler eventHandler){
+        eventHandlers.remove(eventHandler);
+    }
+
+    public void joinToServer(String ipAddress) {
         if(isHasClientImpl()) {
             ClientEventHandler handler = new ClientEventHandler() {
                 @Override
                 public void onOpen() {
-                    connectHandler.onOpen();
-                    System.out.println("client onOpen");
+                    for(ClientEventHandler eventHandler: eventHandlers) {
+                        eventHandler.onOpen();
+                    }
                 }
 
                 @Override
                 public void onMessage(String message) {
-
+                    for(ClientEventHandler eventHandler: eventHandlers) {
+                        eventHandler.onMessage(message);
+                    }
                 }
 
                 @Override
                 public void onClose() {
-
+                    for(ClientEventHandler eventHandler: eventHandlers) {
+                        eventHandler.onClose();
+                    }
                 }
 
                 @Override
                 public void onError(Exception ex) {
-                    connectHandler.onError(ex);
-                    System.out.println("client onError");
+                    for(ClientEventHandler eventHandler: eventHandlers) {
+                        eventHandler.onError(ex);
+                    }
                 }
             };
             clientWebSocketImpl.joinToServer("wss://"+ipAddress+":"+ClientWebSocketInt.PORT, handler);

@@ -22,6 +22,7 @@ public class JoinToServerScreen implements Screen {
 	private final Game game;
 	Stage stage;
 	Skin skin;
+	private ClientEventHandler clientEventHandler;
 
 	TextField serverIpTF;
 	TextField userNameTF;
@@ -47,6 +48,8 @@ public class JoinToServerScreen implements Screen {
 		stage.addActor(joinGameButton);
 		joinGameButton.addListener(getTouchListener());
 
+		createEventHandler();
+		GameClient.getInstance().addEventHandler(clientEventHandler);
 	}
 
 	@Override
@@ -88,6 +91,7 @@ public class JoinToServerScreen implements Screen {
 	public void dispose() {
 		skin.dispose();
 		stage.dispose();
+		GameClient.getInstance().removeEventHandler(clientEventHandler);
 	}
 
 	private EventListener getTouchListener() {
@@ -99,35 +103,41 @@ public class JoinToServerScreen implements Screen {
 
 			@Override
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				if (event.getListenerActor() == joinGameButton) {
+				if (event.getListenerActor() == joinGameButton && !joinGameButton.isDisabled()) {
 					joinGameButton.setDisabled(true);
 					String adr = serverIpTF.getText();
-					ClientEventHandler handler = new ClientEventHandler() {
-						@Override
-						public void onOpen() {
-							//TODO
-							System.out.println("connected");
-						}
 
-						@Override
-						public void onMessage(String message) {
-
-						}
-
-						@Override
-						public void onClose() {
-
-						}
-
-						@Override
-						public void onError(Exception ex) {
-							joinGameButton.setDisabled(false);
-							joinGameButton.setChecked(false);
-							showDialog(ex.getMessage());
-						}
-					};
-					GameClient.getInstance().joinToServer(adr, handler);
+					GameClient.getInstance().joinToServer(adr);
 				}
+			}
+		};
+	}
+
+	private void createEventHandler(){
+		clientEventHandler = new ClientEventHandler() {
+			@Override
+			public void onOpen() {
+				//TODO
+				System.out.println("connected");
+			}
+
+			@Override
+			public void onMessage(String message) {
+
+			}
+
+			@Override
+			public void onClose() {
+				joinGameButton.setDisabled(false);
+				joinGameButton.setChecked(false);
+				showDialog("closed");
+			}
+
+			@Override
+			public void onError(Exception ex) {
+				joinGameButton.setDisabled(false);
+				joinGameButton.setChecked(false);
+				showDialog(ex.getMessage());
 			}
 		};
 	}
