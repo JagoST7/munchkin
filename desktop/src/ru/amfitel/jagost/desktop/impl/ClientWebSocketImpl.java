@@ -3,7 +3,7 @@ package ru.amfitel.jagost.desktop.impl;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import ru.amfitel.jagost.api.ClientWebSocketInt;
-import ru.amfitel.jagost.server.ClientEventHandler;
+import ru.amfitel.jagost.net.ClientEventHandler;
 
 import java.net.URI;
 

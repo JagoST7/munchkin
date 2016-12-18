@@ -1,4 +1,4 @@
-package ru.amfitel.jagost.server;
+package ru.amfitel.jagost.net;
 
 /**
  * Created by estarcev on 16.12.2016.

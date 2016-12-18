@@ -4,7 +4,7 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import ru.amfitel.jagost.api.ServerWebSocketInt;
 import org.java_websocket.server.WebSocketServer;
-import ru.amfitel.jagost.server.ServerEventsHandler;
+import ru.amfitel.jagost.net.ServerEventsHandler;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

@@ -1,6 +1,6 @@
 package ru.amfitel.jagost.api;
 
-import ru.amfitel.jagost.server.ServerEventsHandler;
+import ru.amfitel.jagost.net.ServerEventsHandler;
 
 /**
  * Created by estarcev on 14.12.2016.

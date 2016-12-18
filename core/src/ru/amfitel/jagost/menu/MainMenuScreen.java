@@ -8,7 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import ru.amfitel.jagost.server.GameServer;
+import ru.amfitel.jagost.net.GameClient;
+import ru.amfitel.jagost.net.GameServer;
 
 /**
  * Created by st_ni on 11.12.2016.
@@ -60,7 +61,7 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         startNewServerButton.setDisabled(!GameServer.getInstance().isHasServerImpl());
-        joinGameButton.setDisabled(!GameServer.getInstance().isHasClientImpl());
+        joinGameButton.setDisabled(!GameClient.getInstance().isHasClientImpl());
 
         stage.act();
         stage.draw();
@@ -110,10 +111,10 @@ public class MainMenuScreen implements Screen {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (event.getListenerActor() == exitGameButton) {
                     Gdx.app.exit();
-                } else if (event.getListenerActor() == startNewServerButton) {
+                } else if (event.getListenerActor() == startNewServerButton && !startNewServerButton.isDisabled()) {
                     game.setScreen(new StartServerScreen(game));
                     MainMenuScreen.this.dispose();
-                } else if (event.getListenerActor() == joinGameButton) {
+                } else if (event.getListenerActor() == joinGameButton && !joinGameButton.isDisabled()) {
                     game.setScreen(new JoinToServerScreen(game));
                     MainMenuScreen.this.dispose();
                 }

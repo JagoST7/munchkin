@@ -4,7 +4,8 @@ import com.badlogic.gdx.Game;
 import ru.amfitel.jagost.api.ClientWebSocketInt;
 import ru.amfitel.jagost.api.ServerWebSocketInt;
 import ru.amfitel.jagost.menu.MainMenuScreen;
-import ru.amfitel.jagost.server.GameServer;
+import ru.amfitel.jagost.net.GameClient;
+import ru.amfitel.jagost.net.GameServer;
 
 public class EntryPoint extends Game {
 
@@ -28,6 +29,6 @@ public class EntryPoint extends Game {
 	}
 
 	public void setWebSocketImpl(ClientWebSocketInt clientWebSocketInt){
-		GameServer.getInstance().setWebSocketImpl(clientWebSocketInt);
+		GameClient.getInstance().setWebSocketImpl(clientWebSocketInt);
 	}
 }

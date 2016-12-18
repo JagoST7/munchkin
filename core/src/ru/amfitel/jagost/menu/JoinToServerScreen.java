@@ -10,8 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import ru.amfitel.jagost.server.ClientEventHandler;
-import ru.amfitel.jagost.server.GameServer;
+import ru.amfitel.jagost.net.ClientEventHandler;
+import ru.amfitel.jagost.net.GameClient;
+import ru.amfitel.jagost.net.NetUtils;
 
 /**
  * Created by estarcev on 16.12.2016.
@@ -36,7 +37,7 @@ public class JoinToServerScreen implements Screen {
 		Gdx.graphics.setContinuousRendering(false);
 		Gdx.graphics.requestRendering();
 
-		serverIpTF = new TextField(GameServer.getOwnIpAddress(), skin);
+		serverIpTF = new TextField(NetUtils.getOwnIpAddress(), skin);
 		stage.addActor(serverIpTF);
 
 		userNameTF = new TextField("User#"+this.hashCode(), skin);
@@ -125,7 +126,7 @@ public class JoinToServerScreen implements Screen {
 							showDialog(ex.getMessage());
 						}
 					};
-					GameServer.getInstance().joinToServer(adr, handler);
+					GameClient.getInstance().joinToServer(adr, handler);
 				}
 			}
 		};

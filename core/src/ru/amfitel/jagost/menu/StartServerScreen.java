@@ -9,7 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import ru.amfitel.jagost.server.GameServer;
+import ru.amfitel.jagost.net.GameServer;
+import ru.amfitel.jagost.net.NetUtils;
 
 
 /**
@@ -37,7 +38,7 @@ public class StartServerScreen implements Screen {
 
 		GameServer.getInstance().startServer();
 
-		log.setText("Start server on : " + GameServer.getOwnIpAddress());
+		log.setText("Start server on : " + NetUtils.getOwnIpAddress());
 	}
 
 	@Override
