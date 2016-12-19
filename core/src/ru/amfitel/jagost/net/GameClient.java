@@ -58,7 +58,7 @@ public class GameClient {
                 }
 
                 @Override
-                public void onMessage(String message) {
+                public void onMessage(MessageInt message) {
                     for(ClientEventHandler eventHandler: eventHandlers) {
                         eventHandler.onMessage(message);
                     }

@@ -52,7 +52,7 @@ public class GameServer {
 				}
 
 				@Override
-				public void onMessage(int hash, String message) {
+				public void onMessage(int hash, MessageInt message) {
 
 				}
 

@@ -7,7 +7,7 @@ public interface ClientEventHandler {
 
 	void onOpen();
 
-	void onMessage(String message);
+	void onMessage(MessageInt message);
 
 	void onClose();
 

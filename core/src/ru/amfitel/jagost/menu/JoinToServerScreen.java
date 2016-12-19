@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import ru.amfitel.jagost.net.ClientEventHandler;
 import ru.amfitel.jagost.net.GameClient;
+import ru.amfitel.jagost.net.MessageInt;
 import ru.amfitel.jagost.net.NetUtils;
 
 /**
@@ -122,7 +123,7 @@ public class JoinToServerScreen implements Screen {
 			}
 
 			@Override
-			public void onMessage(String message) {
+			public void onMessage(MessageInt message) {
 
 			}
 

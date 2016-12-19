@@ -4,6 +4,7 @@ import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import ru.amfitel.jagost.api.ServerWebSocketInt;
 import org.java_websocket.server.WebSocketServer;
+import ru.amfitel.jagost.net.MessageInt;
 import ru.amfitel.jagost.net.ServerEventsHandler;
 
 import java.io.IOException;
@@ -36,7 +37,8 @@ public class ServerWebSocketImpl implements ServerWebSocketInt {
 
 			@Override
 			public void onMessage(WebSocket conn, String message) {
-				handler.onMessage(conn.hashCode(), message);
+				MessageInt impl = new MessageImpl().parse(message);
+				handler.onMessage(conn.hashCode(), impl);
 			}
 
 			@Override
@@ -61,17 +63,17 @@ public class ServerWebSocketImpl implements ServerWebSocketInt {
 	}
 
 	@Override
-	public void sendMessage(String msg, int... hashes) {
+	public void sendMessage(MessageInt msg, int... hashes) {
 		if (wss != null) {
 			for (WebSocket conn : wss.connections()) {
 				if (hashes != null && hashes.length>0) {
 					for (int hash : hashes) {
 						if (hash == conn.hashCode()) {
-							conn.send(msg);
+							conn.send(msg.toString());
 						}
 					}
 				} else {
-					conn.send(msg);
+					conn.send(msg.toString());
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package ru.amfitel.jagost.api;
 
+import ru.amfitel.jagost.net.MessageInt;
 import ru.amfitel.jagost.net.ServerEventsHandler;
 
 /**
@@ -13,5 +14,5 @@ public interface ServerWebSocketInt {
 
     void startServer(ServerEventsHandler handler);
 
-    void sendMessage(String msg, int... hashes);
+    void sendMessage(MessageInt msg, int... hashes);
 }

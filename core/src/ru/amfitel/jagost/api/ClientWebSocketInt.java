@@ -1,6 +1,7 @@
 package ru.amfitel.jagost.api;
 
 import ru.amfitel.jagost.net.ClientEventHandler;
+import ru.amfitel.jagost.net.MessageInt;
 
 /**
  * Created by estarcev on 16.12.2016.
@@ -13,5 +14,5 @@ public interface ClientWebSocketInt {
 
 	void close();
 
-	void sendMessage(String msg);
+	void sendMessage(MessageInt msg);
 }

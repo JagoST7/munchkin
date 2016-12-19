@@ -4,6 +4,7 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import ru.amfitel.jagost.api.ClientWebSocketInt;
 import ru.amfitel.jagost.net.ClientEventHandler;
+import ru.amfitel.jagost.net.MessageInt;
 
 import java.net.URI;
 
@@ -25,7 +26,8 @@ public class ClientWebSocketImpl implements ClientWebSocketInt {
 
 			@Override
 			public void onMessage(String message) {
-				handler.onMessage(message);
+				MessageInt impl = new MessageImpl().parse(message);
+				handler.onMessage(impl);
 			}
 
 			@Override
@@ -49,9 +51,9 @@ public class ClientWebSocketImpl implements ClientWebSocketInt {
 	}
 
 	@Override
-	public void sendMessage(String msg) {
+	public void sendMessage(MessageInt msg) {
 		if(wsc != null) {
-			wsc.send(msg);
+			wsc.send(msg.toString());
 		}
 	}
 }

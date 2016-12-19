@@ -9,7 +9,7 @@ public interface ServerEventsHandler {
 
 	void onClose(int hash);
 
-	void onMessage(int hash, String message);
+	void onMessage(int hash, MessageInt message);
 
 	void onError(int hash, Exception ex);
 }
