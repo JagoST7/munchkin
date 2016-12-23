@@ -15,4 +15,6 @@ public interface ClientWebSocketInt {
 	void close();
 
 	void sendMessage(MessageInt msg);
+
+	MessageInt getNewMessage();
 }

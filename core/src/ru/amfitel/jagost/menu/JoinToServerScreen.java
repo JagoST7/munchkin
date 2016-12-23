@@ -42,7 +42,7 @@ public class JoinToServerScreen implements Screen {
 		serverIpTF = new TextField(NetUtils.getOwnIpAddress(), skin);
 		stage.addActor(serverIpTF);
 
-		userNameTF = new TextField("User#"+this.hashCode(), skin);
+		userNameTF = new TextField("User#"+Gdx.app.hashCode(), skin);
 		stage.addActor(userNameTF);
 
 		joinGameButton = new TextButton("Join", skin);

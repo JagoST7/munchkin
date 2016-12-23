@@ -37,7 +37,7 @@ public class ServerWebSocketImpl implements ServerWebSocketInt {
 
 			@Override
 			public void onMessage(WebSocket conn, String message) {
-				MessageInt impl = new MessageImpl().parse(message);
+				MessageInt impl = MessageImpl.parseStat(message);
 				handler.onMessage(conn.hashCode(), impl);
 			}
 
@@ -77,6 +77,11 @@ public class ServerWebSocketImpl implements ServerWebSocketInt {
 				}
 			}
 		}
+	}
+
+	@Override
+	public MessageInt getNewMessage() {
+		return MessageImpl.parseStat(null);
 	}
 
 }

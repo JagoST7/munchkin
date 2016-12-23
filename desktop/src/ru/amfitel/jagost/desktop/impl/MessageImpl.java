@@ -12,33 +12,48 @@ public class MessageImpl implements MessageInt {
 
 	private JsonObject jsonObject;
 
+	private MessageImpl(){}
+
 	@Override
 	public MessageInt parse(String json) {
-		JsonElement el = new JsonParser().parse(json);
-		if(el != null) {
-			MessageImpl impl = new MessageImpl();
-			impl.jsonObject = el.getAsJsonObject();
-			return impl;
-		}
-		return null;
+		return parseStat(json);
 	}
 
-	//compile "com.google.code.gson:gson:2.2.4"
-	public static JsonObject stringToJson(String inStr) {
-		JsonElement el = new JsonParser().parse(inStr);
-		if(el != null) {
-			return el.getAsJsonObject();
+	public static MessageInt parseStat(String json) {
+		MessageImpl impl = new MessageImpl();
+		if (json != null && !json.isEmpty() && !json.equals("{}")) {
+			try {
+				JsonElement el = new JsonParser().parse(json);
+				impl.jsonObject = el.getAsJsonObject();
+				return impl;
+			} catch (Exception e) {
+				//^:(
+			}
 		}
-		return null;
+		impl.jsonObject = new JsonObject();
+		return impl;
 	}
 
-	public static String paramAsString(JsonObject json, String name) {
-		JsonElement el = json.get(name);
+	@Override
+	public void addProperty(String property, String value) {
+		jsonObject.addProperty(property, value);
+	}
+
+	@Override
+	public String getPropAsString(String property) {
+		JsonElement el =jsonObject.get(property);
 		if(el != null) {
 			return el.getAsString();
 		}
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return jsonObject.toString();
+	}
+
+	//compile "com.google.code.gson:gson:2.2.4"
 
 	public static Integer paramAsInteger(JsonObject json, String name) {
 		JsonElement el = json.get(name);

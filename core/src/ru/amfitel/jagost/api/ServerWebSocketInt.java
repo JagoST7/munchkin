@@ -15,4 +15,6 @@ public interface ServerWebSocketInt {
     void startServer(ServerEventsHandler handler);
 
     void sendMessage(MessageInt msg, int... hashes);
+
+    MessageInt getNewMessage();
 }

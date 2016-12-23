@@ -26,7 +26,7 @@ public class ClientWebSocketImpl implements ClientWebSocketInt {
 
 			@Override
 			public void onMessage(String message) {
-				MessageInt impl = new MessageImpl().parse(message);
+				MessageInt impl = MessageImpl.parseStat(message);
 				handler.onMessage(impl);
 			}
 
@@ -55,5 +55,10 @@ public class ClientWebSocketImpl implements ClientWebSocketInt {
 		if(wsc != null) {
 			wsc.send(msg.toString());
 		}
+	}
+
+	@Override
+	public MessageInt getNewMessage() {
+		return MessageImpl.parseStat(null);
 	}
 }
